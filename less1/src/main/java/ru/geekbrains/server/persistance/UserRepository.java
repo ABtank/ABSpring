@@ -1,11 +1,15 @@
 package ru.geekbrains.server.persistance;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import ru.geekbrains.server.User;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class UserRepository {
 
     private final Connection conn;
@@ -13,6 +17,10 @@ public class UserRepository {
     public UserRepository(Connection conn) throws SQLException {
         this.conn = conn;
         createTableIfNotExists(conn);
+    }
+    @Autowired
+    public UserRepository(DataSource dataSource) throws SQLException {
+        this(dataSource.getConnection());
     }
 
     public void insert(User user) throws SQLException {
@@ -55,7 +63,7 @@ public class UserRepository {
                     "\tid int auto_increment primary key,\n" +
                     "    login varchar(25),\n" +
                     "    password varchar(25),\n" +
-                  //  "    unique index uq_login(login)\n" +
+                    "    unique index uq_login(login)\n" +
                     ");");
         }
     }
