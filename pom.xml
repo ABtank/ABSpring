@@ -12,6 +12,7 @@
 
     <modules>
         <module>less1</module>
+        <module>less2</module>
     </modules>
 
     <properties>
