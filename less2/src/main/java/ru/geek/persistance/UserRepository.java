@@ -44,6 +44,20 @@ public class UserRepository {
         return new User(-1, "", "");
     }
 
+    public User findById(Long id) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "select id, login, password from users where id = ?")) {
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new User(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+        }
+        return new User(-1, "", "");
+    }
+
+
     public List<User> getAllUsers() throws SQLException {
         List<User> res = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {
