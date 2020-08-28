@@ -31,6 +31,16 @@ public class UserRepository {
         }
     }
 
+    public void update(User user) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "UPDATE users SET login=? where id=?;")) {
+            stmt.setString(1, user.getLogin());
+            stmt.setLong(2, user.getId());
+            stmt.execute();
+        }
+    }
+
+
     public User findByLogin(String login) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(
                 "select id, login, password from users where login = ?")) {
