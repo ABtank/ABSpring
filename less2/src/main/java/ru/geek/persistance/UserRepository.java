@@ -94,7 +94,7 @@ public class UserRepository {
 
     public void delete(User user) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE users SET login=NULL, password=NULL where id=?;")) {
+                "DELETE FROM users where id=?;")) {
             stmt.setLong(1, user.getId());
             stmt.execute();
         }

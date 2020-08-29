@@ -98,7 +98,7 @@ public class ProductRepository {
 
     public void delete(Product product) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE products SET name=NULL, description=NULL, price=NULL where id=?;")) {
+                "DELETE FROM products where id=?;")) {
             stmt.setLong(1, product.getId());
             stmt.execute();
         }
