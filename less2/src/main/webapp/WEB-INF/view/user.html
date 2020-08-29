@@ -40,8 +40,30 @@
                 <div class="form-group">
                     <label>Login</label>
                     <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
+                    <label>Password</label>
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="update" class="btn btn-primary">Update</button>
+            </form>
+            <form th:action="@{/user/delete}" method="post" th:object="${user}">
+                <input th:type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label>Login</label>
+                    <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
+                    <label>Password</label>
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
+                </div>
+                <button type="delete" class="btn btn-primary">Delete</button>
+            </form>
+            <form th:action="@{/user/create}" method="post" th:object="${user}">
+                <input th:type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label>Login</label>
+                    <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
+                    <label>Password</label>
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
+                </div>
+                <button type="create" class="btn btn-primary">Create</button>
             </form>
         </div>
     </div>

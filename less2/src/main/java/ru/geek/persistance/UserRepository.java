@@ -33,9 +33,10 @@ public class UserRepository {
 
     public void update(User user) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE users SET login=? where id=?;")) {
+                "UPDATE users SET login=? where id=? and password=?;")) {
             stmt.setString(1, user.getLogin());
             stmt.setLong(2, user.getId());
+            stmt.setString(3, user.getPassword());
             stmt.execute();
         }
     }
@@ -88,6 +89,14 @@ public class UserRepository {
                     "    password varchar(25),\n" +
                     "    unique index uq_login(login)\n" +
                     ");");
+        }
+    }
+
+    public void delete(User user) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "UPDATE users SET login=NULL, password=NULL where id=?;")) {
+            stmt.setLong(1, user.getId());
+            stmt.execute();
         }
     }
 }

@@ -39,4 +39,17 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @PostMapping("/create")
+    public String insertUser(User user) throws SQLException {
+        userRepository.insert(user);
+        return "redirect:/user";
+    }
+
+    @PostMapping("/delete")
+    public String deleteUser(User user) throws SQLException {
+        userRepository.delete(user);
+        return "redirect:/user";
+    }
+
+
 }
