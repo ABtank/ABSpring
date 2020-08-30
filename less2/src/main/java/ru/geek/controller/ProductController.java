@@ -32,7 +32,21 @@ public class ProductController {
     public String editProduct(@PathVariable("id") Long id, Model model) throws SQLException {
         Product product = productRepository.findById(id);
         model.addAttribute("product", product);
-        return "product";
+        return "product_update";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id, Model model) throws SQLException {
+        Product product = productRepository.findById(id);
+        model.addAttribute("product", product);
+        return "product_delete";
+    }
+
+    @GetMapping("/create/{id}")
+    public String createProduct(@PathVariable("id") Long id, Model model) throws SQLException {
+        Product product = productRepository.findById(id);
+        model.addAttribute("product", product);
+        return "product_create";
     }
 
     @PostMapping("/update")
