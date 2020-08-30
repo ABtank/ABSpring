@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -35,29 +35,18 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <a class="btn btn-primary" th:href="@{/user/create/-1}">Add User</a>
-        </div>
 
-        <div class="col-12">
-            <table class="table table-bordered my-2">
-                <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Login</th>
-                    <th scope="col">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="user : ${users}">
-                    <th scope="row" th:text="${user.id}">user id</th>
-                    <td th:text="${user.login}">User login</td>
-                    <td>
-                        <a class="btn btn-success" th:href="@{/user/{id}(id=${user.id})}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" th:href="@{/user/delete/{id}(id=${user.id})}"><i class="far fa-trash-alt"></i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <form th:action="@{/user/delete}" method="post" th:object="${user}">
+                <input th:type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label>Login</label>
+                    <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
+                    <label>Password</label>
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
+                </div>
+                <button type="delete" class="btn btn-primary">Delete</button>
+            </form>
+
         </div>
     </div>
 </div>
@@ -73,5 +62,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
 </body>
-</html>
