@@ -1,9 +1,0 @@
-ru\geek\controller\ProductController.class
-ru\geek\persistance\Product.class
-ru\geek\controller\UserController.class
-ru\geek\persistance\UserRepository.class
-ru\geek\AppConfig.class
-ru\geek\PersistConfig.class
-ru\geek\persistance\ProductRepository.class
-ru\geek\persistance\User.class
-ru\geek\WebInitializer.class
