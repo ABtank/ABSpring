@@ -3,10 +3,7 @@ package ru.geek.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.geek.persistance.Product;
 import ru.geek.persistance.ProductRepository;
 import ru.geek.persistance.User;
@@ -35,7 +32,7 @@ public class ProductController {
         return "product";
     }
 
-    @GetMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public String deleteProduct(@PathVariable("id") Long id) throws SQLException {
         Product product = productRepository.findById(id);
         if (id != null) productRepository.delete(product);
