@@ -30,7 +30,7 @@ public class UserController {
     public String editUser(@PathVariable("id") Long id, Model model) throws SQLException {
         User user = userRepository.findById(id);
         model.addAttribute("user", user);
-        return "user_update";
+        return "user";
     }
 
     @GetMapping("/delete/{id}")
@@ -40,22 +40,20 @@ public class UserController {
         return "user_delete";
     }
 
-    @GetMapping("/create/{id}")
-    public String createUser(@PathVariable("id") Long id, Model model) throws SQLException {
-        User user = userRepository.findById(id);
+    @GetMapping("/create")
+    public String createUser(Model model) {
+        User user = new User();
         model.addAttribute("user", user);
-        return "user_create";
+        return "user";
     }
 
     @PostMapping("/update")
     public String updateUser(User user) throws SQLException {
-        userRepository.update(user);
-        return "redirect:/user";
-    }
-
-    @PostMapping("/create")
-    public String insertUser(User user) throws SQLException {
-        userRepository.insert(user);
+        if(user.getId() != null){
+            userRepository.update(user);
+        }else{
+            userRepository.insert(user);
+        }
         return "redirect:/user";
     }
 

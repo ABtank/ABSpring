@@ -24,7 +24,7 @@ public class ProductController {
     @GetMapping
     public String allProducts(Model model) throws SQLException {
         List<Product> allProducts = productRepository.getAllProducts();
-        model.addAttribute("products",allProducts);
+        model.addAttribute("products", allProducts);
         return "products";
     }
 
@@ -32,38 +32,42 @@ public class ProductController {
     public String editProduct(@PathVariable("id") Long id, Model model) throws SQLException {
         Product product = productRepository.findById(id);
         model.addAttribute("product", product);
-        return "product_update";
+        return "product";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long id, Model model) throws SQLException {
+    @GetMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable("id") Long id) throws SQLException {
         Product product = productRepository.findById(id);
-        model.addAttribute("product", product);
-        return "product_delete";
+        if (id != null) productRepository.delete(product);
+        return "redirect:/product";
     }
 
-    @GetMapping("/create/{id}")
-    public String createProduct(@PathVariable("id") Long id, Model model) throws SQLException {
-        Product product = productRepository.findById(id);
+    @GetMapping("/create")
+    public String createProduct(Model model) {
+        Product product = new Product();
         model.addAttribute("product", product);
-        return "product_create";
+        return "product";
     }
 
     @PostMapping("/update")
     public String updateProduct(Product product) throws SQLException {
-        productRepository.update(product);
+        if (product.getId() != null) {
+            productRepository.update(product);
+        } else {
+            productRepository.insert(product);
+        }
         return "redirect:/product";
     }
 
-    @PostMapping("/create")
-    public String insertProduct(Product product) throws SQLException {
-        productRepository.insert(product);
-        return "redirect:/product";
-    }
+//    @PostMapping("/create")
+//    public String insertProduct(Product product) throws SQLException {
+//        productRepository.insert(product);
+//        return "redirect:/product";
+//    }
 
-    @PostMapping("/delete")
-    public String deleteProduct(Product product) throws SQLException {
-        productRepository.delete(product);
-        return "redirect:/product";
-    }
+//    @PostMapping("/delete")
+//    public String deleteProduct(Product product) throws SQLException {
+//        productRepository.delete(product);
+//        return "redirect:/product";
+//    }
 }

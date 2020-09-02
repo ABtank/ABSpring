@@ -2,23 +2,27 @@ package ru.geek.persistance;
 
 public class Product {
 
-    private long id;
+    private Integer id;
     private String name;
     private String description;
     private long price;
 
-    public Product(long id, String name, String description, long price) {
+    public Product(Integer id, String name, String description, long price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
     }
 
-    public long getId() {
+    public Product() {
+
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -35,8 +35,7 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-
-            <form th:action="@{/user/create}" method="post" th:object="${user}">
+            <form th:action="@{/user/update}" method="post" th:object="${user}">
                 <input th:type="hidden" th:field="*{id}">
                 <div class="form-group">
                     <label>Login</label>
@@ -44,8 +43,9 @@
                     <label>Password</label>
                     <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
                 </div>
-                <button type="create" class="btn btn-primary">Create</button>
+                <button type="Submit" class="btn btn-primary">Submit</button>
             </form>
+
         </div>
     </div>
 </div>

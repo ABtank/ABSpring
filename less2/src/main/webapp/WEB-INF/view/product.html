@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -35,17 +35,22 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/user/update}" method="post" th:object="${user}">
+            <form th:action="@{/product/update}" method="post" th:object="${product}">
                 <input th:type="hidden" th:field="*{id}">
                 <div class="form-group">
-                    <label>Login</label>
-                    <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
-                    <label>Password</label>
-                    <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
+                    <label>Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" placeholder="Enter name">
                 </div>
-                <button type="update" class="btn btn-primary">Update</button>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" class="form-control"  th:field="*{description}" placeholder="Enter description">
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" class="form-control" th:field="*{price}" placeholder="Enter price">
+                </div>
+                <button type="Submit" class="btn btn-primary">Submit</button>
             </form>
-
         </div>
     </div>
 </div>
