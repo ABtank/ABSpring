@@ -6,6 +6,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import javax.servlet.Filter;
 
+//связующий клас между сервером приложений и Spring
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override

@@ -26,7 +26,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{../}">List</a>
+                <a class="nav-link" href="#">List</a>
             </li>
         </ul>
     </div>
@@ -35,22 +35,29 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/product/update}" method="post" th:object="${product}">
-                <input th:type="hidden" th:field="*{id}">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" th:field="*{name}" placeholder="Enter name">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" class="form-control"  th:field="*{description}" placeholder="Enter description">
-                </div>
-                <div class="form-group">
-                    <label>Price</label>
-                    <input type="number" class="form-control" th:field="*{price}" placeholder="Enter price">
-                </div>
-                <button type="Submit" class="btn btn-primary">Submit</button>
-            </form>
+            <a class="btn btn-primary" th:href="@{/user/create}">Add User</a>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Login</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${user.id}">user id</th>
+                    <td th:text="${user.login}">User login</td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/user/{id}(id=${user.id})}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" th:href="@{/user/delete/{id}(id=${user.id})}"><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -66,5 +73,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
 </body>
+</html>

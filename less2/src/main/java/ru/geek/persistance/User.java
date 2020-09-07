@@ -2,17 +2,21 @@ package ru.geek.persistance;
 
 public class User {
 
-    private int id;
+    private Integer id;
     private String login;
     private String password;
 
-    public User(int id, String login, String password) {
+    public User(Integer id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
     }
 
-    public int getId() {
+    public User() {
+
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -22,5 +26,17 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
