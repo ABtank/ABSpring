@@ -1,6 +1,5 @@
 package ru.abramov.hw3;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import javax.persistence.EntityManager;
@@ -22,42 +21,54 @@ public class Main3 {
         EntityManager em = emFactory.createEntityManager();
 
         em.getTransaction().begin();
-//        em.persist(new Customer(null, "Vasia"));
-//        em.persist(new Customer(null, "Iurii"));
-//        em.persist(new Customer(null, "Ivan"));
-//        em.persist(new Customer(null, "Boby"));
-
-        List<Customer> customers = em.createQuery("from Customer", Customer.class).getResultList();
-        System.out.println(customers);
-
-//        em.persist( new Product(null, "siemens",100L,customers.get(1)));
-//        em.persist(new Product(null, "sony",101L,customers.get(2)));
-//        em.persist(new Product(null, "samsung",102L,customers.get(3)));
-//        em.persist(new Product(null, "nokia",103L,customers.get(0)));
-//        em.persist(new Product(null, "LG",104L,customers.get(1)));
-//        em.persist( new Product(null, "HTC",105L,customers.get(2)));
-//        em.persist( new Product(null, "Texet",106L,customers.get(3)));
-//        em.persist( new Product(null, "apple",107L,customers.get(0)));
-//        em.persist(new Product(null, "nokia",103L,customers.get(3)));
-        List<Product> products = em.createQuery("from Product", Product.class).getResultList();
-        System.out.println(products);
+        fillTablesIfEmpty(em);
         em.getTransaction().commit();
 
         String str = "Ivan";
-        List<String> p = allProductsCostomer(str);
+        List<String> p = allProductsCostomer(em,str);
         System.out.println(str + " = " + p);
 
         str = "nokia";
-        p = allCustomersBayThisProduct(str);
+        p = allCustomersBayThisProduct(em,str);
         System.out.println(str + " = " + p);
 
-        deleteProductCustomer("nokia","Boby");
+        deleteProductCustomer(em,str,"Boby");
+
+        em.getTransaction().begin();
+
+        em.getTransaction().commit();
 
         emFactory.close();
     }
 
-    private static List<String> allCustomersBayThisProduct(String product) {
-        EntityManager em = emFactory.createEntityManager();
+    private static void fillTablesIfEmpty(EntityManager em) {
+        List<Customer> list = em.createQuery("Select c FROM Customer c", Customer.class).getResultList();
+        if(list.isEmpty()) {
+            em.persist(new Customer(null, "Vasia"));
+            em.persist(new Customer(null, "Iurii"));
+            em.persist(new Customer(null, "Ivan"));
+            em.persist(new Customer(null, "Boby"));
+            list = em.createQuery("Select c FROM Customer c", Customer.class).getResultList();
+        }
+        fillTableProductsIfEmpty(em,list);
+    }
+
+    private static void fillTableProductsIfEmpty(EntityManager em, List<Customer> customers) {
+        List<Product> list = em.createQuery("Select p FROM Product p", Product.class).getResultList();
+        if(list.isEmpty()) {
+            em.persist(new Product(null, "siemens", 100L, customers.get(1)));
+            em.persist(new Product(null, "sony", 101L, customers.get(2)));
+            em.persist(new Product(null, "samsung", 102L, customers.get(3)));
+            em.persist(new Product(null, "nokia", 103L, customers.get(0)));
+            em.persist(new Product(null, "LG", 104L, customers.get(1)));
+            em.persist(new Product(null, "HTC", 105L, customers.get(2)));
+            em.persist(new Product(null, "Texet", 106L, customers.get(3)));
+            em.persist(new Product(null, "apple", 107L, customers.get(0)));
+            em.persist(new Product(null, "nokia", 103L, customers.get(3)));
+        }
+    }
+
+    private static List<String> allCustomersBayThisProduct(EntityManager em, String product) {
         em.getTransaction().begin();
 
         List<Product> products = em.createQuery("FROM Product p WHERE p.name = :product", Product.class)
@@ -76,8 +87,7 @@ public class Main3 {
         return customerList;
     }
 
-    private static void deleteProductCustomer(String productName, String customerName){
-        EntityManager em = emFactory.createEntityManager();
+    private static void deleteProductCustomer(EntityManager em, String productName, String customerName){
         em.getTransaction().begin();
         Integer id = getIdCustomer(customerName, em);
         Customer customer = em.find(Customer.class,id);
@@ -94,9 +104,7 @@ public class Main3 {
         em.getTransaction().commit();
     }
 
-    private static List<String> allProductsCostomer(String name) {
-        EntityManager em = emFactory.createEntityManager();
-
+    private static List<String> allProductsCostomer(EntityManager em, String name) {
         em.getTransaction().begin();
         Integer id = getIdCustomer(name, em);
 
