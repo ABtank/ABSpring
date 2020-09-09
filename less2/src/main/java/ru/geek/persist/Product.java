@@ -1,4 +1,4 @@
-package ru.geek.persistance;
+package ru.geek.persist;
 
 public class Product {
 

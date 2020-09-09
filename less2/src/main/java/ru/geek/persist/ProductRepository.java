@@ -1,4 +1,4 @@
-package ru.geek.persistance;
+package ru.geek.persist;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

@@ -20,13 +20,16 @@ public class Main3 {
 
         EntityManager em = emFactory.createEntityManager();
 
-        em.getTransaction().begin();
-        fillTablesIfEmpty(em);
-        em.getTransaction().commit();
+//        em.getTransaction().begin();
+//        fillTablesIfEmpty(em);
+//        em.getTransaction().commit();
 
         em.getTransaction().begin();
         Customer customer = em.find(Customer.class, 1);
+        System.out.println(customer);
         Product product = em.find(Product.class, 1);
+        em.getTransaction().commit();
+        em.getTransaction().begin();
         OrderItem orderItem = new OrderItem(null,product,customer,product.getPrice(),1);
         em.persist(orderItem);
         em.getTransaction().commit();

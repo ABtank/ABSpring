@@ -1,13 +1,12 @@
 package ru.geek.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.geek.persistance.User;
-import ru.geek.persistance.UserRepository;
+import ru.geek.persist.entity.User;
+import ru.geek.persist.UserRepository;
 
 import javax.validation.Valid;
 import java.sql.SQLException;

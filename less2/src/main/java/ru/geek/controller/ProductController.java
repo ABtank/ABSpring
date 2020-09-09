@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.geek.persistance.Product;
-import ru.geek.persistance.ProductRepository;
-import ru.geek.persistance.User;
+import ru.geek.persist.Product;
+import ru.geek.persist.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.List;
