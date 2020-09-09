@@ -1,6 +1,8 @@
 package ru.abramov.hw3;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name="products")
@@ -10,25 +12,23 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column (length = 128)
     private String name;
 
     @Column
-    private Long price;
+    private BigDecimal price;
 
-
-    @ManyToOne
-    @JoinColumn(name="customer_id")
-    private Customer customer;
+    @OneToMany(mappedBy = "product",
+            cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 
     public Product() {
     }
 
-    public Product(Integer id, String name, Long price, Customer customer) {
+    public Product(Integer id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.customer = customer;
     }
 
     public Integer getId() {
@@ -47,20 +47,20 @@ public class Product {
         this.name = name;
     }
 
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override

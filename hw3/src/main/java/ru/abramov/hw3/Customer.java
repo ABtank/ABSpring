@@ -10,13 +10,12 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column (length = 128)
     private String name;
 
-    @Column
     @OneToMany(mappedBy = "customer",
             cascade = CascadeType.ALL)
-    private List<Product> product;
+    private List<OrderItem> orderItems;
 
     public Customer() {
     }
@@ -42,12 +41,12 @@ public class Customer {
         this.name = name;
     }
 
-    public List<Product> getProduct() {
-        return product;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setProduct(List<Product> product) {
-        this.product = product;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override

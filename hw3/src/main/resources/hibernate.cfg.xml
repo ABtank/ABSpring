@@ -20,5 +20,7 @@
 
         <mapping class="ru.abramov.hw3.Customer"/>
         <mapping class="ru.abramov.hw3.Product"/>
+        <mapping class="ru.abramov.hw3.OrderItem"/>
+<!--        <mapping class="ru.abramov.hw3.Order"/>-->
     </session-factory>
 </hibernate-configuration>
