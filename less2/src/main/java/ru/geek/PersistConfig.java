@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import ru.geek.persist.ProductRepository;
-import ru.geek.persist.UserRepository;
+import ru.geek.persist.repo.UserRepository;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -18,6 +19,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:application.properties")
+@EnableJpaRepositories("ru.geek.persist.repo")
 public class PersistConfig {
 
     @Value("${database.driver.class}")
@@ -32,10 +34,6 @@ public class PersistConfig {
     @Value("${database.password}")
     private String password;
 
-    @Bean
-    public UserRepository userRepository(DataSource dataSource) throws SQLException {
-        return new UserRepository(dataSource);
-    }
 
     @Bean
     public ProductRepository productRepository(DataSource dataSource) throws  SQLException{
@@ -67,7 +65,7 @@ public class PersistConfig {
         factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         // Указание пакета, в котором будут находиться классы-сущности
-        factory.setPackagesToScan("com.geek.persist.entity");
+        factory.setPackagesToScan("ru.geek.persist.entity");
 
         factory.setJpaProperties(jpaProperties());
         return factory;
