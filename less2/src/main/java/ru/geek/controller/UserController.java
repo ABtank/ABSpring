@@ -1,5 +1,7 @@
 package ru.geek.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +18,22 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    private final static Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserRepository userRepository;
 
     //отобразить весь список пользователей
     @GetMapping //обрабатываем запрос типа GET
-    public String allUsers(Model model) {
-        List<User> allUsers = userRepository.findAll();
+    public String allUsers(Model model, @RequestParam(value = "name", required = false) String name) {
+        logger.info("Filtering by name: {}", name);
+
+        List<User> allUsers;
+        if (name == null || name.isEmpty()) {
+            allUsers = userRepository.findAll();
+        } else {
+            allUsers = userRepository.findByLoginLike("%" + name + "%");
+        }
         model.addAttribute("users", allUsers);
         return "users";
     }
@@ -49,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@Valid User user, BindingResult bindingResult){
+    public String updateUser(@Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user"; //остаемся на той же странице
         }
@@ -60,7 +71,7 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public String deleteUser(@Valid User user){
+    public String deleteUser(@Valid User user) {
         userRepository.delete(user);
         return "redirect:/user";
     }
