@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model) throws SQLException {
+    public String deleteUser(@PathVariable("id") Integer id, Model model){
         User user = userRepository.findById(id).get();
         model.addAttribute("user", user);
         return "user_delete";
