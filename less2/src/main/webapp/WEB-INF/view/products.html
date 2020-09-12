@@ -36,14 +36,40 @@
     <div class="row py-2">
         <div class="col-12">
             <a class="btn btn-primary" th:href="@{/product/create}">Add Product</a>
+            <a class="btn btn-primary" th:href="@{/product/order_desc}">firstMax</a>
+            <a class="btn btn-primary" th:href="@{/product/order_min}">firstMin</a>
         </div>
 
-        <div class="col-12 mt-3">
-            <form>
-                <label>Name</label>
-                <input type="text" name="name" id="name" th:value="${param.name}">
-                <button class="btn btn-primary" type="submit">Filter</button>
-            </form>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Кнопка различных фильтров. Длинная длинная кнопочка
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="col-12 mt-3">
+                    <form>
+                        <label>Price</label>
+                        <input type="number" name="price" id="price" th:value="${param.price}" placeholder="Enter Price">
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </form>
+                </div>
+                <div class="col-12 mt-3">
+                    <form>
+                        <label>Name</label>
+                        <input type="text" name="name" id="name" th:value="${param.name}" placeholder="Enter Name">
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </form>
+                </div>
+                <div class="col-12 mt-3">
+                    <form>
+                        <label>Between</label>
+                        <input type="number" name="min-price" id="min-price" th:value="${param.minPrice}" placeholder="min">
+                        <input type="number" name="max-price" id="max-price" th:value="${param.maxPrice}" placeholder="max">
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                    </form>
+                </div>
+                <a class="dropdown-item" href="#">Description</a>
+                <a class="dropdown-item" href="#">Price</a>
+            </div>
         </div>
 
         <div class="col-12">

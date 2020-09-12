@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.geek.persist.entity.Product;
 import ru.geek.persist.repo.ProductRepository;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -22,13 +23,27 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @GetMapping
-    public String allProducts(Model model, @RequestParam(value = "name", required = false) String name){
+    public String allProducts(Model model,
+                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "price", required = false) BigDecimal price,
+                              @RequestParam(value = "min-price", required = false) BigDecimal minPrice,
+                              @RequestParam(value = "max-price", required = false) BigDecimal maxPrice
+                              ) {
         LOGGER.info("Filter by name: {}", name);
         List<Product> allProducts;
-        if(name ==null || name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             allProducts = productRepository.findAll();
-        }else {
+        } else {
             allProducts = productRepository.findByNameLike("%" + name + "%");
+            price=null;
+        }
+        if (price != null) {
+            allProducts = productRepository.findByPriceLike(price);
+            minPrice=null;
+            maxPrice=null;
+        }
+        if(minPrice!= null && maxPrice != null){
+            allProducts = productRepository.findByPriceBetweenOrderByPriceDesc(minPrice,maxPrice);
         }
         model.addAttribute("products", allProducts);
         return "products";
@@ -55,9 +70,23 @@ public class ProductController {
         return "product";
     }
 
+    @GetMapping("/order_desc")
+    public String orderDesc(Model model){
+        List<Product> products = productRepository.OrderByPriceDesc();
+        model.addAttribute("products",products);
+        return "products";
+    }
+
+    @GetMapping("/order_min")
+    public String orderMin(Model model){
+        List<Product> products = productRepository.OrderByPrice();
+        model.addAttribute("products",products);
+        return "products";
+    }
+
     @PostMapping("/update")
-    public String updateProduct(Product product){
-            productRepository.save(product);
+    public String updateProduct(Product product) {
+        productRepository.save(product);
         return "redirect:/product";
     }
 
