@@ -18,4 +18,6 @@ public interface ProductRepository extends JpaRepository <Product, Integer> {
     List<Product> findByPriceBetweenOrderByPriceDesc(BigDecimal minPrice,BigDecimal maxPrice);
 
     List<Product> OrderByPrice();
+
+    List<Product> findByNameLikeAndPriceLike(String NameLike, BigDecimal priceLike);
 }

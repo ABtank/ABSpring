@@ -28,22 +28,21 @@ public class ProductController {
                               @RequestParam(value = "price", required = false) BigDecimal price,
                               @RequestParam(value = "min-price", required = false) BigDecimal minPrice,
                               @RequestParam(value = "max-price", required = false) BigDecimal maxPrice
-                              ) {
+    ) {
         LOGGER.info("Filter by name: {}", name);
         List<Product> allProducts;
-        if (name == null || name.isEmpty()) {
-            allProducts = productRepository.findAll();
+        if (minPrice == null || maxPrice == null) {
+            if ((name == null || name.isEmpty()) && (price == null)) {
+                allProducts = productRepository.findAll();
+            } else if ((name == null || name.isEmpty())) {
+                allProducts = productRepository.findByPriceLike(price);
+            } else if (price == null) {
+                allProducts = productRepository.findByNameLike("%" + name + "%");
+            }else{
+                allProducts = productRepository.findByNameLikeAndPriceLike("%" + name + "%", price );
+            }
         } else {
-            allProducts = productRepository.findByNameLike("%" + name + "%");
-            price=null;
-        }
-        if (price != null) {
-            allProducts = productRepository.findByPriceLike(price);
-            minPrice=null;
-            maxPrice=null;
-        }
-        if(minPrice!= null && maxPrice != null){
-            allProducts = productRepository.findByPriceBetweenOrderByPriceDesc(minPrice,maxPrice);
+            allProducts = productRepository.findByPriceBetweenOrderByPriceDesc(minPrice, maxPrice);
         }
         model.addAttribute("products", allProducts);
         return "products";
@@ -71,16 +70,16 @@ public class ProductController {
     }
 
     @GetMapping("/order_desc")
-    public String orderDesc(Model model){
+    public String orderDesc(Model model) {
         List<Product> products = productRepository.OrderByPriceDesc();
-        model.addAttribute("products",products);
+        model.addAttribute("products", products);
         return "products";
     }
 
     @GetMapping("/order_min")
-    public String orderMin(Model model){
+    public String orderMin(Model model) {
         List<Product> products = productRepository.OrderByPrice();
-        model.addAttribute("products",products);
+        model.addAttribute("products", products);
         return "products";
     }
 
