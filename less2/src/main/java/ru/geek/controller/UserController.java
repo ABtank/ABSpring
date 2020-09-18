@@ -3,6 +3,8 @@ package ru.geek.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import ru.geek.persist.repo.UserSpecification;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -28,8 +31,12 @@ public class UserController {
     @GetMapping //обрабатываем запрос типа GET
     public String allUsers(Model model,
                            @RequestParam(value = "name", required = false) String name,
-                           @RequestParam(value = "email", required = false) String email) {
+                           @RequestParam(value = "email", required = false) String email,
+                           @RequestParam("page") Optional<Integer> page,
+                           @RequestParam("size") Optional<Integer> size) {
         logger.info("\nFiltering by \nname: {} \nemail: {}\n", name, email);
+
+        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(5));
 
         Specification<User> spec = UserSpecification.trueLiteral();
 
@@ -39,9 +46,8 @@ public class UserController {
         if (email != null && !email.isEmpty()) {
             spec = spec.and(UserSpecification.emailLike(email));
         }
-        List<User> users = userRepository.findAll(spec);
 
-        model.addAttribute("users", users);
+        model.addAttribute("usersPage", userRepository.findAll(spec, pageRequest));
         return "users";
     }
 
