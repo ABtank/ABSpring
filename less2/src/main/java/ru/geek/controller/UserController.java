@@ -3,15 +3,16 @@ package ru.geek.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geek.persist.entity.User;
 import ru.geek.persist.repo.UserRepository;
+import ru.geek.persist.repo.UserSpecification;
 
 import javax.validation.Valid;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -25,16 +26,23 @@ public class UserController {
 
     //отобразить весь список пользователей
     @GetMapping //обрабатываем запрос типа GET
-    public String allUsers(Model model, @RequestParam(value = "name", required = false) String name) {
-        logger.info("Filtering by name: {}", name);
+    public String allUsers(Model model,
+                           @RequestParam(value = "name", required = false) String name,
+                           @RequestParam(value = "email", required = false) String email) {
+        logger.info("Filtering by name: {} email: {}", name, email);
 
-        List<User> allUsers;
-        if (name == null || name.isEmpty()) {
-            allUsers = userRepository.findAll();
-        } else {
-            allUsers = userRepository.findByLoginLike("%" + name + "%");
+        Specification<User> spec = UserSpecification.trueLiteral();
+
+        if(name !=null && name.isEmpty()){
+            spec.and(UserSpecification.loginLike(name));
         }
-        model.addAttribute("users", allUsers);
+        if(email !=null && email.isEmpty()){
+            spec.and(UserSpecification.emailLike(email));
+        }
+
+        List<User> users = userRepository.findAll(spec);
+
+        model.addAttribute("users", users);
         return "users";
     }
 
