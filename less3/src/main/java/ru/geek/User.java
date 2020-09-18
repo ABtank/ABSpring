@@ -17,6 +17,9 @@ public class User {
     @Column
     private String password;
 
+    @Column
+    private String email;
+
     // одному User много контактов
     @OneToMany(
             mappedBy = "user",
@@ -65,12 +68,22 @@ public class User {
         this.contacts = contacts;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", contacts=" + contacts +
                 '}';
     }
 }

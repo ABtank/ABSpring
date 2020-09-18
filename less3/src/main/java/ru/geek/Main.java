@@ -5,6 +5,11 @@ import ru.geek.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -29,40 +34,63 @@ public class Main {
 //        em.close();
 
         // SELECT
-        EntityManager em = emFactory.createEntityManager();
+//        EntityManager em = emFactory.createEntityManager();
 
-        User user = em.find(User.class, 1);
-        System.out.println(user);
-
-        List<User> users = em.createQuery("from User", User.class).getResultList();
-        System.out.println(users);
-
-        user = em.createQuery("from User where login = :login", User.class)
-                .setParameter("login", "petr")
-                .getSingleResult();
-        System.out.println(user);
+//        User user = em.find(User.class, 1);
+//        System.out.println(user);
+//
+//        List<User> users = em.createQuery("from User", User.class).getResultList();
+//        System.out.println(users);
+//
+//        user = em.createQuery("from User where login = :login", User.class)
+//                .setParameter("login", "petr")
+//                .getSingleResult();
+//        System.out.println(user);
 
 //        em.close();
 
         // UPDATE
 //        EntityManager em = emFactory.createEntityManager();
 //
-        User user2 = em.find(User.class, 1);
-        System.out.println(user2);
-
-        em.getTransaction().begin();
-        user2.setPassword("new_password");
-        em.getTransaction().commit();
+//        User user2 = em.find(User.class, 1);
+//        System.out.println(user2);
+//
+//        em.getTransaction().begin();
+//        user2.setPassword("new_password");
+//        em.getTransaction().commit();
 //
 //        em.close();
 
 //        EntityManager em = emFactory.createEntityManager();
 //
-        User user3 = em.find(User.class, 1);
-        Contact contact = new Contact(null, "mobile phone", "123456789", user3);
+//        User user3 = em.find(User.class, 1);
+//        Contact contact = new Contact(null, "mobile phone", "123456789", user3);
+//
+//        em.getTransaction().begin();
+//        em.persist(contact);
+//        em.getTransaction().commit();
 
-        em.getTransaction().begin();
-        em.persist(contact);
-        em.getTransaction().commit();
+        EntityManager em = emFactory.createEntityManager();
+
+        em.createQuery("select u from User u " +
+                "where u.login like '%a%' and" +
+                " u.email is null");
+
+//        ----Criteria API----
+//        получаем критерий билдера
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        Создаем запрос
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+//        что будет в From
+        Root<User> from = query.from(User.class);
+//        Создаем условие WHERE
+//        Создаем список предикатов
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.like(from.get("login"), "%a%"));
+        predicates.add(cb.isNull(from.get("email")));
+//        Делаем запрос
+        CriteriaQuery<User> cq = query.select(from).where(predicates.toArray(new Predicate[0]));
+        List<User> resultList = em.createQuery(cq).getResultList();
+        System.out.println(resultList);
     }
 }
