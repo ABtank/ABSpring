@@ -40,9 +40,11 @@
 
         <div class="col-12 mt-3">
             <form>
-            <label>Name</label>
-            <input type="text" name="name" id="name" th:value="${param.name}">
-            <button class="btn btn-primary" type="submit">Filter</button>
+                <label>Name</label>
+                <input type="text" name="name" id="name" th:value="${param.name}">
+                <label>Email</label>
+                <input type="text" name="email" id="email" th:value="${param.email}">
+                <button class="btn btn-primary" type="submit">Filter</button>
             </form>
         </div>
 
@@ -52,6 +54,7 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Login</th>
+                    <th scope="col">Email </th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -59,6 +62,7 @@
                 <tr th:each="user : ${users}">
                     <th scope="row" th:text="${user.id}">user id</th>
                     <td th:text="${user.login}">User login</td>
+                    <td th:text="${user.email}">User email</td>
                     <td>
                         <a class="btn btn-success" th:href="@{/user/{id}(id=${user.id})}"><i
                                 class="fas fa-edit"></i></a>

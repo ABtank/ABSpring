@@ -29,17 +29,16 @@ public class UserController {
     public String allUsers(Model model,
                            @RequestParam(value = "name", required = false) String name,
                            @RequestParam(value = "email", required = false) String email) {
-        logger.info("Filtering by name: {} email: {}", name, email);
+        logger.info("\nFiltering by \nname: {} \nemail: {}\n", name, email);
 
         Specification<User> spec = UserSpecification.trueLiteral();
 
-        if(name !=null && name.isEmpty()){
-            spec.and(UserSpecification.loginLike(name));
+        if (name != null && !name.isEmpty()) {
+            spec = spec.and(UserSpecification.loginLike(name));
         }
-        if(email !=null && email.isEmpty()){
-            spec.and(UserSpecification.emailLike(email));
+        if (email != null && !email.isEmpty()) {
+            spec = spec.and(UserSpecification.emailLike(email));
         }
-
         List<User> users = userRepository.findAll(spec);
 
         model.addAttribute("users", users);
@@ -54,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model){
+    public String deleteUser(@PathVariable("id") Integer id, Model model) {
         User user = userRepository.findById(id).get();
         model.addAttribute("user", user);
         return "user_delete";

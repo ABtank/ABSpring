@@ -26,9 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findByNameLikeAndPriceLike(String NameLike, BigDecimal priceLike);
 
-    @Query("from User u" +
+    @Query("from Product u " +
             "where (u.name = :name or :name is null) and" +
             "(u.price = price or :price is null)")
-    List<Product> quweryByNameLikeAndPriceLike(@Param("name") String NameLike, @Param("price") BigDecimal priceLike);
+    List<Product> queryByNameLikeAndPriceLike(@Param("name") String NameLike, @Param("price") BigDecimal priceLike);
 
 }
