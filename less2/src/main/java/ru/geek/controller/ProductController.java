@@ -1,12 +1,15 @@
 package ru.geek.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.geek.persist.Product;
-import ru.geek.persist.ProductRepository;
+import ru.geek.persist.entity.Product;
+import ru.geek.persist.repo.ProductRepository;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,26 +17,47 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+
     @Autowired
     private ProductRepository productRepository;
 
     @GetMapping
-    public String allProducts(Model model) throws SQLException {
-        List<Product> allProducts = productRepository.getAllProducts();
+    public String allProducts(Model model,
+                              @RequestParam(value = "name", required = false) String name,
+                              @RequestParam(value = "price", required = false) BigDecimal price,
+                              @RequestParam(value = "min-price", required = false) BigDecimal minPrice,
+                              @RequestParam(value = "max-price", required = false) BigDecimal maxPrice
+    ) {
+        LOGGER.info("Filter by name: {}", name);
+        List<Product> allProducts;
+        if (minPrice == null || maxPrice == null) {
+            if ((name == null || name.isEmpty()) && (price == null)) {
+                allProducts = productRepository.findAll();
+            } else if ((name == null || name.isEmpty())) {
+                allProducts = productRepository.findByPriceLike(price);
+            } else if (price == null) {
+                allProducts = productRepository.findByNameLike("%" + name + "%");
+            }else{
+                allProducts = productRepository.findByNameLikeAndPriceLike("%" + name + "%", price );
+            }
+        } else {
+            allProducts = productRepository.findByPriceBetweenOrderByPriceDesc(minPrice, maxPrice);
+        }
         model.addAttribute("products", allProducts);
         return "products";
     }
 
     @GetMapping("/{id}")
-    public String editProduct(@PathVariable("id") Long id, Model model) throws SQLException {
-        Product product = productRepository.findById(id);
+    public String editProduct(@PathVariable("id") Integer id, Model model) throws SQLException {
+        Product product = productRepository.findById(id).get();
         model.addAttribute("product", product);
         return "product";
     }
 
     @DeleteMapping("/{id}/delete")
-    public String deleteProduct(@PathVariable("id") Long id) throws SQLException {
-        Product product = productRepository.findById(id);
+    public String deleteProduct(@PathVariable("id") Integer id) throws SQLException {
+        Product product = productRepository.findById(id).get();
         if (id != null) productRepository.delete(product);
         return "redirect:/product";
     }
@@ -45,13 +69,23 @@ public class ProductController {
         return "product";
     }
 
+    @GetMapping("/order_desc")
+    public String orderDesc(Model model) {
+        List<Product> products = productRepository.OrderByPriceDesc();
+        model.addAttribute("products", products);
+        return "products";
+    }
+
+    @GetMapping("/order_min")
+    public String orderMin(Model model) {
+        List<Product> products = productRepository.OrderByPrice();
+        model.addAttribute("products", products);
+        return "products";
+    }
+
     @PostMapping("/update")
-    public String updateProduct(Product product) throws SQLException {
-        if (product.getId() != null) {
-            productRepository.update(product);
-        } else {
-            productRepository.insert(product);
-        }
+    public String updateProduct(Product product) {
+        productRepository.save(product);
         return "redirect:/product";
     }
 

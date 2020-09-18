@@ -9,12 +9,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import ru.geek.persist.ProductRepository;
-import ru.geek.persist.repo.UserRepository;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.Properties;
 
 @Configuration
@@ -33,12 +30,6 @@ public class PersistConfig {
 
     @Value("${database.password}")
     private String password;
-
-
-    @Bean
-    public ProductRepository productRepository(DataSource dataSource) throws  SQLException{
-        return new ProductRepository(dataSource);
-    }
 
     @Bean
     public DataSource dataSource() {
