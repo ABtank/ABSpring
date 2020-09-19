@@ -36,7 +36,7 @@ public class UserController {
                            @RequestParam("size") Optional<Integer> size) {
         logger.info("\nFiltering by \nname: {} \nemail: {}\n", name, email);
 
-        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(5));
+        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(5), Sort.by("login").and(Sort.by("email")));
 
         Specification<User> spec = UserSpecification.trueLiteral();
 
