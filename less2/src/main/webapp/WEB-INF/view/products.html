@@ -97,6 +97,31 @@
                 </tbody>
             </table>
         </div>
+        <div class="col-12">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{product(page=${productsPage.first}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">Start</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" th:href="@{product(page=${productsPage.previous}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}" tabindex="-1">Previous</a>
+                    </li>
+                    <li th:each="num: ${#numbers.sequence(1,productsPage.totalPages)}"
+                        class="page-item"
+                        th:classappend="${num == productsPage.number + 1} ? 'active'">
+                        <a class="page-link"
+                           th:text="${num}"
+                           th:href="@{product(page=${num}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{product(page=${productsPage.next}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}" tabindex="-1">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{product(page=${productsPage.totalPages}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">End</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 
