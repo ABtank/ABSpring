@@ -76,11 +76,13 @@
         <div class="col-12">
             <nav aria-label="...">
                 <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{user(page=${usersPage.first}, size=${usersPage.size}, name=${name}, email=${email})}">Start</a>
+                    <li class="page-item"
+                        th:classappend="${usersPage.number == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${1}, size=${usersPage.size}, name=${name}, email=${email})}">Start</a>
                     </li>
-                    <li class="page-item disabled">
-                        <a class="page-link" th:href="@{user(page=${usersPage.previous}, size=${usersPage.size}, name=${name}, email=${email})}" tabindex="-1">Previous</a>
+                    <li class="page-item"
+                    th:classappend="${usersPage.number == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${usersPage.number}, size=${usersPage.size}, name=${name}, email=${email})}" tabindex="-1">Previous</a>
                     </li>
                     <li th:each="num: ${#numbers.sequence(1,usersPage.totalPages)}"
                         class="page-item"
@@ -89,10 +91,12 @@
                            th:text="${num}"
                            th:href="@{user(page=${num}, size=${usersPage.size}, name=${name}, email=${email})}">1</a>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{user(page=${usersPage.next}, size=${usersPage.size}, name=${name}, email=${email})}" tabindex="-1">Next</a>
+                    <li class="page-item"
+                        th:classappend="${usersPage.number + 1 == usersPage.totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${usersPage.number+2}, size=${usersPage.size}, name=${name}, email=${email})}" tabindex="-1">Next</a>
                     </li>
-                    <li class="page-item">
+                    <li class="page-item"
+                        th:classappend="${usersPage.number + 1 == usersPage.totalPages} ? 'disabled'">
                         <a class="page-link" th:href="@{user(page=${usersPage.totalPages}, size=${usersPage.size}, name=${name}, email=${email})}">End</a>
                     </li>
                 </ul>

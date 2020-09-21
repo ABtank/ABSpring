@@ -81,7 +81,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product : ${products}">
+                <tr th:each="product : ${productsPage.content}">
                     <th scope="row" th:text="${product.id}">1</th>
                     <td th:text="${product.name}">MacBook name</td>
                     <td th:text="${product.description}">MacBook description</td>
@@ -100,11 +100,13 @@
         <div class="col-12">
             <nav aria-label="...">
                 <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{product(page=${productsPage.first}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">Start</a>
+                    <li class="page-item"
+                        th:classappend="${productsPage.number == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{product(page=${1}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">Start</a>
                     </li>
-                    <li class="page-item disabled">
-                        <a class="page-link" th:href="@{product(page=${productsPage.previous}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}" tabindex="-1">Previous</a>
+                    <li class="page-item"
+                    th:classappend="${productsPage.number == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{product(page=${productsPage.number}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}" tabindex="-1">Previous</a>
                     </li>
                     <li th:each="num: ${#numbers.sequence(1,productsPage.totalPages)}"
                         class="page-item"
@@ -113,10 +115,12 @@
                            th:text="${num}"
                            th:href="@{product(page=${num}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">1</a>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{product(page=${productsPage.next}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}" tabindex="-1">Next</a>
+                    <li class="page-item"
+                        th:classappend="${productsPage.number + 1 == productsPage.totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{product(page=${productsPage.number+2}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}" tabindex="-1">Next</a>
                     </li>
-                    <li class="page-item">
+                    <li class="page-item"
+                        th:classappend="${productsPage.number + 1 == productsPage.totalPages} ? 'disabled'">
                         <a class="page-link" th:href="@{product(page=${productsPage.totalPages}, size=${productsPage.size}, name=${name}, description=${description}, price=${price})}">End</a>
                     </li>
                 </ul>

@@ -3,6 +3,7 @@ package ru.geek.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -46,8 +47,8 @@ public class UserController {
         if (email != null && !email.isEmpty()) {
             spec = spec.and(UserSpecification.emailLike(email));
         }
-
-        model.addAttribute("usersPage", userRepository.findAll(spec, pageRequest));
+        Page<User> usersPage = userRepository.findAll(spec, pageRequest);
+        model.addAttribute("usersPage", usersPage);
         return "users";
     }
 

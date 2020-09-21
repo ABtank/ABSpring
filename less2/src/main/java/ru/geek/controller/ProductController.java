@@ -59,7 +59,7 @@ public class ProductController {
             spec = spec.and(ProductSpecification.beforeMaxPrice(maxPrice));
         }
 
-        model.addAttribute("products", productRepository.findAll(spec, pageRequest));
+        model.addAttribute("productsPage", productRepository.findAll(spec, pageRequest));
         return "products";
     }
 
