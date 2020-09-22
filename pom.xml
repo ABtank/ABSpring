@@ -15,6 +15,7 @@
         <module>less2</module>
         <module>less3</module>
         <module>hw3</module>
+        <module>less6</module>
     </modules>
 
     <properties>
