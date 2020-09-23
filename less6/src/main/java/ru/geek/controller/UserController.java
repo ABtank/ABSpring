@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String editUser(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("user", user);
         return "user";
     }
@@ -89,5 +90,10 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String nodFoundExceptionHandler (NotFoundException exception){
+        return "not_found";
+    }
 
 }
