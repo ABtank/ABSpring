@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.geek.persist.entity.User;
 import ru.geek.persist.repo.UserRepository;
 import ru.geek.persist.repo.UserSpecification;
@@ -54,7 +55,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String editUser(@PathVariable("id") Integer id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            NotFoundException exception = new NotFoundException();
+            exception.setMessage(id.toString(),User.class.getSimpleName());
+            return exception;
+        });
         model.addAttribute("user", user);
         return "user";
     }
@@ -88,12 +93,6 @@ public class UserController {
     public String deleteUser(@Valid User user) {
         userRepository.delete(user);
         return "redirect:/user";
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String nodFoundExceptionHandler (NotFoundException exception){
-        return "not_found";
     }
 
 }
