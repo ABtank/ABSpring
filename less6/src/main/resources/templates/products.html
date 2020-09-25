@@ -89,7 +89,7 @@
                     <td>
                         <a class="btn btn-success" th:href="@{/product/{id}(id=${product.id})}"><i
                                 class="fas fa-edit"></i></a>
-                        <form th:action="@{/product/{id}/delete (id=${product.id})}" th:method="delete">
+                        <form th:action="@{/product/{id}/delete (id=${product.id})}" >
                             <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </td>

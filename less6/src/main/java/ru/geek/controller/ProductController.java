@@ -3,6 +3,7 @@ package ru.geek.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -64,15 +65,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String editProduct(@PathVariable("id") Integer id, Model model) throws SQLException {
-        Product product = productRepository.findById(id).get();
+    public String editProduct(@PathVariable("id") Integer id, Model model){
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString(), Product.class.getSimpleName()));
         model.addAttribute("product", product);
         return "product";
     }
 
-    @DeleteMapping("/{id}/delete")
-    public String deleteProduct(@PathVariable("id") Integer id) throws SQLException {
-        Product product = productRepository.findById(id).get();
+    @GetMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable("id") Integer id){
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString(), Product.class.getSimpleName()));
         if (id != null) productRepository.delete(product);
         return "redirect:/product";
     }
