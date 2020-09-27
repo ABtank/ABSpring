@@ -16,7 +16,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories("ru.geek.persist.repo")
+@EnableJpaRepositories("ru.ru.geek.persist.repo")
 public class PersistConfig {
 
     @Value("${database.driver.class}")
@@ -56,7 +56,7 @@ public class PersistConfig {
         factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         // Указание пакета, в котором будут находиться классы-сущности
-        factory.setPackagesToScan("ru.geek.persist.entity");
+        factory.setPackagesToScan("ru.ru.geek.persist.entity");
 
         factory.setJpaProperties(jpaProperties());
         return factory;
