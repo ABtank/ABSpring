@@ -35,12 +35,16 @@ public class ProductController {
                               @RequestParam(value = "price", required = false) BigDecimal price,
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size,
+                              @RequestParam(value = "max", defaultValue = "false") Boolean firstMax,
+                              @RequestParam(value = "min", defaultValue = "false") Boolean firstMin,
                               @RequestParam(value = "min-price", required = false) BigDecimal minPrice,
                               @RequestParam(value = "max-price", required = false) BigDecimal maxPrice
     ) {
-        LOGGER.info("\nFilter by \nname: {} \ndescription: {} \nprice: {} \nmin-price: {} \nmax-price {}\n", name, description, price, minPrice, maxPrice);
-
-        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(5), Sort.by("name").and(Sort.by("price")));
+        LOGGER.info("\nFilter by \nname: {} \ndescription: {} \nprice: {} \nmin-price: {} \nmax-price {}\n firstMax {}\n firstMin {}\n", name, description, price, minPrice, maxPrice, firstMax, firstMin);
+        PageRequest pageRequest;
+        if (firstMax) pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by("price").descending()));
+        else if (firstMin) pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by("price")));
+        else pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by("id")));
 
         Specification<Product> spec = ProductSpecification.literalTrue();
 
@@ -65,14 +69,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String editProduct(@PathVariable("id") Integer id, Model model){
+    public String editProduct(@PathVariable("id") Integer id, Model model) {
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString(), Product.class.getSimpleName()));
         model.addAttribute("product", product);
         return "product";
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteProduct(@PathVariable("id") Integer id){
+    public String deleteProduct(@PathVariable("id") Integer id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString(), Product.class.getSimpleName()));
         if (id != null) productRepository.delete(product);
         return "redirect:/product";

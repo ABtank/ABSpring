@@ -36,8 +36,8 @@
     <div class="row py-2">
         <div class="col-12">
             <a class="btn btn-primary" th:href="@{/product/create}">Add Product</a>
-            <a class="btn btn-primary" th:href="@{/product/order_desc}">firstMax</a>
-            <a class="btn btn-primary" th:href="@{/product/order_min}">firstMin</a>
+            <a class="btn btn-primary" th:href="@{product(max = true, min = false, page=${productsPage.totalPages}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}">firstMax</a>
+            <a class="btn btn-primary" th:href="@{product(min = true, max = false, page=${productsPage.totalPages}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}">firstMin</a>
         </div>
 
         <div class="dropdown">
@@ -46,6 +46,11 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <div class="col-12 mt-3">
+                    <form>
+                        <label>Size</label>
+                        <input type="number" name="size" id="size" th:value="${param.size}" placeholder="Enter size">
+                        <button class="btn btn-primary" type="submit">set Size</button>
+                    </form>
                     <form>
                         <label>Price</label>
                         <input type="text" name="price" id="price" th:value="${param.price}" placeholder="Enter Price">
@@ -70,7 +75,10 @@
         </div>
 
         <div class="col-12">
-            <table class="table table-bordered my-2">
+                <div class="row py-2" th:if="${productsPage.isEmpty()}">
+                    <h2>Ничего не найдено</h2>
+                </div>
+            <table class="table table-bordered my-2" th:if="${!productsPage.isEmpty()}">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -89,7 +97,7 @@
                     <td>
                         <a class="btn btn-success" th:href="@{/product/{id}(id=${product.id})}"><i
                                 class="fas fa-edit"></i></a>
-                        <form th:action="@{/product/{id}/delete (id=${product.id})}" >
+                        <form th:action="@{/product/{id}/delete (id=${product.id})}">
                             <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </td>
@@ -98,30 +106,30 @@
             </table>
         </div>
         <div class="col-12">
-            <nav aria-label="...">
+            <nav aria-label="..." th:if="${productsPage.totalPages > 1}">
                 <ul class="pagination">
                     <li class="page-item"
                         th:classappend="${productsPage.number == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{product(page=${1}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}">Start</a>
+                        <a class="page-link" th:href="@{product(page=${1}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price}, max=${param.max}, min=${param.min})}">Start</a>
                     </li>
                     <li class="page-item"
                     th:classappend="${productsPage.number == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{product(page=${productsPage.number}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}" tabindex="-1">Previous</a>
+                        <a class="page-link" th:href="@{product(page=${productsPage.number}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price}, max=${param.max}, min=${param.min})}" tabindex="-1">Previous</a>
                     </li>
                     <li th:each="num: ${#numbers.sequence(1,productsPage.totalPages)}"
                         class="page-item"
                         th:classappend="${num == productsPage.number + 1} ? 'active'">
                         <a class="page-link"
                            th:text="${num}"
-                           th:href="@{product(page=${num}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}">1</a>
+                           th:href="@{product(page=${num}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price}, max=${param.max}, min=${param.min})}">1</a>
                     </li>
                     <li class="page-item"
                         th:classappend="${productsPage.number + 1 == productsPage.totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{product(page=${productsPage.number+2}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}" tabindex="-1">Next</a>
+                        <a class="page-link" th:href="@{product(page=${productsPage.number+2}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price}, max=${param.max}, min=${param.min})}" tabindex="-1">Next</a>
                     </li>
                     <li class="page-item"
                         th:classappend="${productsPage.number + 1 == productsPage.totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{product(page=${productsPage.totalPages}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price})}">End</a>
+                        <a class="page-link" th:href="@{product(page=${productsPage.totalPages}, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price}, max=${param.max}, min=${param.min})}">End</a>
                     </li>
                 </ul>
             </nav>
