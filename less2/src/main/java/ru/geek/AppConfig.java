@@ -20,7 +20,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @EnableWebMvc
 @Configuration
 @Import(PersistConfig.class)
-@ComponentScan("ru.ru.geek")
+@ComponentScan("ru.geek")
 public class AppConfig implements WebMvcConfigurer {
 
     private ApplicationContext applicationContext;
