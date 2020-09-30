@@ -1,0 +1,29 @@
+GET http://localhost:8080/mvc-app/api/v1/user/all
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/user/1/id
+
+###
+
+POST GET http://localhost:8080/mvc-app/api/v1/user
+
+Content-Type: application/json
+{
+"id":1,
+"login":"Iurii Abramov",
+"email":"abtankbkru@gmail.com",
+"password":"123"
+}
+
+###
+
+POST GET http://localhost:8080/mvc-app/api/v1/user
+
+Content-Type: application/json
+{
+"id":23,
+"login":"Iurii Abramov",
+"email":"abtankbkru@gmail.com",
+"password":"123"
+}
