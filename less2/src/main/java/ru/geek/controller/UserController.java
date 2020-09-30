@@ -16,7 +16,6 @@ import ru.geek.persist.repo.UserRepository;
 import ru.geek.persist.repo.UserSpecification;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller

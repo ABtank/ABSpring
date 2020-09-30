@@ -3,7 +3,6 @@ package ru.geek.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,7 +14,6 @@ import ru.geek.persist.repo.ProductRepository;
 import ru.geek.persist.repo.ProductSpecification;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
