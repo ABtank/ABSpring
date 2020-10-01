@@ -5,10 +5,10 @@ GET http://localhost:8080/mvc-app/api/v1/user/all
 GET http://localhost:8080/mvc-app/api/v1/user/1/id
 
 ###
-
-POST GET http://localhost:8080/mvc-app/api/v1/user
-
+Создание user с ошибкой
+POST http://localhost:8080/mvc-app/api/v1/user
 Content-Type: application/json
+
 {
 "id":1,
 "login":"Iurii Abramov",
@@ -18,12 +18,91 @@ Content-Type: application/json
 
 ###
 
-POST GET http://localhost:8080/mvc-app/api/v1/user
-
+Создание user
+POST http://localhost:8080/mvc-app/api/v1/user
 Content-Type: application/json
+
 {
 "id":23,
 "login":"Iurii Abramov",
 "email":"abtankbkru@gmail.com",
 "password":"123"
+}
+
+###
+
+Обновление user
+PUT http://localhost:8080/mvc-app/api/v1/user
+Content-Type: application/json
+
+{
+"id":1,
+"login":"Iurii Abramovich",
+"email":"abtankbkru@gmail.com",
+"password":"123"
+}
+
+###
+
+Удаление
+DELETE http://localhost:8080/mvc-app/api/v1/user
+Content-Type: application/json
+
+{
+"id":23
+}
+
+###
+GET http://localhost:8080/mvc-app/api/v1/product/all
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/product/1/id
+
+###
+Создание product с ошибкой
+POST http://localhost:8080/mvc-app/api/v1/user
+Content-Type: application/json
+
+{
+"id":4,
+"name":"Nokia 3310",
+"description":"тот еще кирпич ",
+"price":11.00
+}
+
+###
+
+Создание product
+POST http://localhost:8080/mvc-app/api/v1/product
+Content-Type: application/json
+
+{
+"id":33,
+"name":"Nokia 3310",
+"description":"тот еще кирпич ",
+"price":11.00
+}
+
+###
+
+Обновление product
+PUT http://localhost:8080/mvc-app/api/v1/user
+Content-Type: application/json
+
+{
+"id":4,
+"name":"Nokia 3310",
+"description":"тот еще кирпич ",
+"price":11.00
+}
+
+###
+
+Удаление
+DELETE http://localhost:8080/mvc-app/api/v1/product
+Content-Type: application/json
+
+{
+"id":33
 }
