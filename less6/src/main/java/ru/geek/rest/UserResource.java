@@ -9,6 +9,7 @@ import ru.geek.controller.NotFoundException;
 import ru.geek.persist.entity.User;
 import ru.geek.persist.repo.UserRepository;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RequestMapping("/api/v1/user")
@@ -58,5 +59,10 @@ public class UserResource {
     @ExceptionHandler
     public ResponseEntity<String> IllegalArgumentExceptionHandler (IllegalArgumentException ex){
         return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> sqlIntegrityConstraintViolationExceptionHandler (SQLIntegrityConstraintViolationException ex){
+        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
