@@ -33,16 +33,15 @@ public class ProductController {
                               @RequestParam(value = "price", required = false) BigDecimal price,
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size,
-                              @RequestParam(value = "max", defaultValue = "false") Boolean firstMax,
-                              @RequestParam(value = "min", defaultValue = "false") Boolean firstMin,
+                              @RequestParam(value = "sort", defaultValue = "id") String sortType,
+                              @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                               @RequestParam(value = "min-price", required = false) BigDecimal minPrice,
                               @RequestParam(value = "max-price", required = false) BigDecimal maxPrice
     ) {
-        LOGGER.info("\nFilter by \nname: {} \ndescription: {} \nprice: {} \nmin-price: {} \nmax-price {}\n firstMax {}\n firstMin {}\n", name, description, price, minPrice, maxPrice, firstMax, firstMin);
+        LOGGER.info("\nFilter by \nname: {} \ndescription: {} \nprice: {} \nmin-price: {} \nmax-price {}\n sortType {}\n desc {}\n", name, description, price, minPrice, maxPrice, sortType, desc);
         PageRequest pageRequest;
-        if (firstMax) pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by("price").descending()));
-        else if (firstMin) pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by("price")));
-        else pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by("id")));
+        if (desc) pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by(sortType).descending()));
+        else pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), (Sort.by(sortType)));
 
         Specification<Product> spec = ProductSpecification.literalTrue();
 
