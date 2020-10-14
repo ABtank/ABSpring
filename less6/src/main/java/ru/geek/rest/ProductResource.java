@@ -1,5 +1,6 @@
 package ru.geek.rest;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.geek.controller.NotFoundException;
@@ -8,6 +9,7 @@ import ru.geek.persist.repo.ProductRepository;
 
 import java.util.List;
 
+@Tag(name = "Product resource API", description = "API to operate Product resource ...")
 @RestController
 @RequestMapping(path = "/api/v1/product")
 public class ProductResource {
