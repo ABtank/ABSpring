@@ -76,18 +76,28 @@
         <div class="col-12">
             <nav aria-label="...">
                 <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    <li class="page-item"
+                        th:classappend="${usersPage.number == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${1}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">Start</a>
+                    </li>
+                    <li class="page-item"
+                    th:classappend="${usersPage.number == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${usersPage.number}, size=${usersPage.size}, name=${param.name}, email=${param.email})}" tabindex="-1">Previous</a>
                     </li>
                     <li th:each="num: ${#numbers.sequence(1,usersPage.totalPages)}"
                         class="page-item"
                         th:classappend="${num == usersPage.number + 1} ? 'active'">
                         <a class="page-link"
                            th:text="${num}"
-                           th:href="@{user(page=${num}, size=${usersPage.size}, name=${name}, email=${email})}">1</a>
+                           th:href="@{user(page=${num}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">1</a>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
+                    <li class="page-item"
+                        th:classappend="${usersPage.number + 1 == usersPage.totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${usersPage.number+2}, size=${usersPage.size}, name=${param.name}, email=${param.email})}" tabindex="-1">Next</a>
+                    </li>
+                    <li class="page-item"
+                        th:classappend="${usersPage.number + 1 == usersPage.totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{user(page=${usersPage.totalPages}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">End</a>
                     </li>
                 </ul>
             </nav>
