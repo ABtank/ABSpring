@@ -20,7 +20,7 @@ public class User {
     @Email
     private String email;
 
-    @Column
+    @Column (length = 512)
     private String password;
 
     @Transient

@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.geek.persist.repo.UserRepository;
 
@@ -34,7 +33,6 @@ public class SecurityConfiguration {
                     .formLogin()
                     .and()
                     .logout().logoutSuccessUrl("/");
-            ;
         }
     }
 
@@ -46,6 +44,7 @@ public class SecurityConfiguration {
                               PasswordEncoder passwordEncoder) throws Exception {
         //-----DAO auth----
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        //извлекать из бд инфу о Users
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         auth.authenticationProvider(provider);
@@ -53,11 +52,11 @@ public class SecurityConfiguration {
         //    -------In-memory-------
         auth.inMemoryAuthentication()
                 .withUser("admin")
-                .password("{bcrypt}$2y$12$gQ.hKca7it/OYRBOutDTd.etvqh.wSCOu0awA8Ne38LDjfBlz8K4S")
+                .password(passwordEncoder.encode("123"))
                 .roles("ADMIN");
         auth.inMemoryAuthentication()
                 .withUser("user")
-                .password("{bcrypt}$2y$12$gQ.hKca7it/OYRBOutDTd.etvqh.wSCOu0awA8Ne38LDjfBlz8K4S")
+                .password(passwordEncoder.encode("123"))
                 .roles("USER");
     }
 

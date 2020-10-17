@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <!-- Required meta tags -->
@@ -29,6 +30,13 @@
                 <a class="nav-link" href="#">List</a>
             </li>
         </ul>
+
+        <form sec:authorize="isAuthenticated()" class="form-inline my-2 my-lg-0"
+              th:action="@{/logout}" method="post">
+            <button class="btn btn-outline-success my-2 my-sm-0">
+                Logout <span sec:authentication="principal.username"></span>
+            </button>
+        </form>
     </div>
 </nav>
 
@@ -78,11 +86,14 @@
                 <ul class="pagination">
                     <li class="page-item"
                         th:classappend="${usersPage.number == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{user(page=${1}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">Start</a>
+                        <a class="page-link"
+                           th:href="@{user(page=${1}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">Start</a>
                     </li>
                     <li class="page-item"
-                    th:classappend="${usersPage.number == 0} ? 'disabled'">
-                        <a class="page-link" th:href="@{user(page=${usersPage.number}, size=${usersPage.size}, name=${param.name}, email=${param.email})}" tabindex="-1">Previous</a>
+                        th:classappend="${usersPage.number == 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{user(page=${usersPage.number}, size=${usersPage.size}, name=${param.name}, email=${param.email})}"
+                           tabindex="-1">Previous</a>
                     </li>
                     <li th:each="num: ${#numbers.sequence(1,usersPage.totalPages)}"
                         class="page-item"
@@ -93,11 +104,14 @@
                     </li>
                     <li class="page-item"
                         th:classappend="${usersPage.number + 1 == usersPage.totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{user(page=${usersPage.number+2}, size=${usersPage.size}, name=${param.name}, email=${param.email})}" tabindex="-1">Next</a>
+                        <a class="page-link"
+                           th:href="@{user(page=${usersPage.number+2}, size=${usersPage.size}, name=${param.name}, email=${param.email})}"
+                           tabindex="-1">Next</a>
                     </li>
                     <li class="page-item"
                         th:classappend="${usersPage.number + 1 == usersPage.totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{user(page=${usersPage.totalPages}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">End</a>
+                        <a class="page-link"
+                           th:href="@{user(page=${usersPage.totalPages}, size=${usersPage.size}, name=${param.name}, email=${param.email})}">End</a>
                     </li>
                 </ul>
             </nav>
