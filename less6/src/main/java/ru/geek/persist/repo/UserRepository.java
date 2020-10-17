@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 import ru.geek.persist.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository <User, Integer>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
 
-    User findByLogin(String login);
+    Optional<User> findByLogin(String login);
 
     List<User> findByLoginLike(String loginPattern);
 
@@ -20,8 +21,8 @@ public interface UserRepository extends JpaRepository <User, Integer>, JpaSpecif
 
     List<User> findByEmailLikeAndLoginLike(String login, String email);
 
-    @Query("FROM User u "+
-    "WHERE (u.email = :email or :email is null) and"+
+    @Query("FROM User u " +
+            "WHERE (u.email = :email or :email is null) and" +
             "(u.login = :login or :login is null)")
     List<User> queryByEmailLikeAndLoginLike(@Param("login") String login, @Param("email") String email);
 
