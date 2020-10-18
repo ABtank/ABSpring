@@ -58,6 +58,19 @@
                 <!--                    <small id="passwordError" class="form-text text-error"-->
                 <!--                           th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Validation error</small>-->
                 <!--                </div>-->
+                <div class="form-group">
+                    <label>Roles</label>
+                    <div class="col-sm-10">
+                        <div class="form-check" th:each="role : ${allRoles}">
+                            <input class="form-check-input" type="checkbox" id="gridCheck1"
+                                   th:id="${role.id}" th:value="${role.name}" th:field="*{roles}">
+                            <label class="form-check-label" for="gridCheck1"th:text="${role.name}">
+                                Example checkbox
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="Submit" class="btn btn-primary">Submit</button>
             </form>
 
