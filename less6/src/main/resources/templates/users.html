@@ -17,20 +17,29 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">EShop</a>
+    <form th:action="@{/}" method="get">
+        <button class="btn btn-outline-warning my-2 my-sm-0">EShop</button>
+    </form>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">List</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu">
+                    <form th:action="@{/product}" method="get">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0">Products</button>
+                    </form>
+                    <div class="dropdown-divider"></div>
+                    <form th:action="@{/user}" method="get">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0">Users</button>
+                    </form>
+                </div>
             </li>
         </ul>
-
         <form sec:authorize="isAuthenticated()" class="form-inline my-2 my-lg-0"
               th:action="@{/logout}" method="post">
             <button class="btn btn-outline-success my-2 my-sm-0">
@@ -56,6 +65,16 @@
             </form>
         </div>
 
+        <div class="col-12 mt-3"
+             sec:authorize="hasRole('USER')">
+            <h1>Hello <span sec:authentication="principal.username"></span>
+             your role USER</h1>
+        </div>
+        <div class="col-12 mt-3"
+             sec:authorize="hasRole('ADMIN')">
+            <h1>Hello <span sec:authentication="principal.username"></span>
+             your role ADMIN</h1>
+        </div>
         <div class="col-12">
             <table class="table table-bordered my-2">
                 <thead>
@@ -63,7 +82,7 @@
                     <th scope="col">Id</th>
                     <th scope="col">Login</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Actions</th>
+                    <th sec:authorize="hasRole('ADMIN')" scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,7 +90,7 @@
                     <th scope="row" th:text="${user.id}">user id</th>
                     <td th:text="${user.login}">User login</td>
                     <td th:text="${user.email}">User email</td>
-                    <td>
+                    <td sec:authorize="hasRole('ADMIN')">
                         <a class="btn btn-success" th:href="@{/user/{id}(id=${user.id})}"><i
                                 class="fas fa-edit"></i></a>
                         <a class="btn btn-danger" th:href="@{/user/delete/{id}(id=${user.id})}"><i

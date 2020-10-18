@@ -26,11 +26,11 @@ public class SecurityConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/").anonymous()
-                    .antMatchers("/user/**").hasRole("ADMIN")
-                    .antMatchers("/product/**").hasRole("USER")
+                    .antMatchers("/","/my-login").permitAll()
+                    .antMatchers("/user/**", "/product/**").hasAnyRole("ADMIN","USER")
                     .and()
                     .formLogin()
+                    .loginPage("/my-login")
                     .and()
                     .logout().logoutSuccessUrl("/");
         }
