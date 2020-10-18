@@ -7,18 +7,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import ru.geek.persist.entity.Role;
 import ru.geek.persist.entity.User;
+import ru.geek.persist.repo.RoleRepository;
 import ru.geek.persist.repo.UserRepository;
 import ru.geek.persist.repo.UserSpecification;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,6 +30,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,17 +82,21 @@ public class UserController {
     @GetMapping("/create")
     public String createUser(Model model) {
         User user = new User();
+        List<Role> roles = roleRepository.findAll();
         model.addAttribute("user", user);
+        model.addAttribute("allRoles", roles);
         return "user";
     }
 
     @PostMapping("/update")
-    public String updateUser(@Valid User user, BindingResult bindingResult) {
+    public String updateUser(@Valid User user,@Valid List<Role> roles, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user"; //остаемся на той же странице
         }
+        logger.info("\nUser: {} \nRoles: {} ", user, roles);
 
 //        bindingResult.rejectValue(user.getPassword(),user.getMatchingPassword());
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/user";

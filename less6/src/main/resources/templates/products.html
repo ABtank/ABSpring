@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <!-- Required meta tags -->
@@ -16,7 +17,9 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" th:href="@{product}">EShop</a>
+    <form th:action="@{/}" method="get">
+        <button class="btn btn-outline-warning my-2 my-sm-0">EShop</button>
+    </form>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,8 +28,17 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">List</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu">
+                    <form th:action="@{/product}" method="get">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0">Products</button>
+                    </form>
+                    <div class="dropdown-divider"></div>
+                    <form th:action="@{/user}" method="get">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0">Users</button>
+                    </form>
+                </div>
             </li>
         </ul>
     </div>
@@ -95,6 +107,7 @@
                     <th scope="col"><a class="page-link"
                                        th:href="@{product(sort = price, desc=false, size=${productsPage.size}, name=${param.name}, description=${param.description}, price=${param.price}, min-price=${param.minPrice}, max-price=${param.maxPrice})}">Price</a>
                     </th>
+                    <th sec:authorize="hasRole('USER')" scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -103,7 +116,7 @@
                     <td th:text="${product.name}">MacBook name</td>
                     <td th:text="${product.description}">MacBook description</td>
                     <td th:text="${product.price}">$1000</td>
-                    <td>
+                    <td sec:authorize="hasRole('USER')">
                         <a class="btn btn-success" th:href="@{/product/{id}(id=${product.id})}"><i
                                 class="fas fa-edit"></i></a>
                         <form th:action="@{/product/{id}/delete (id=${product.id})}">
