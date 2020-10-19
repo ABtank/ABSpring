@@ -1,11 +1,23 @@
 package ru.abtank.geek.springmvc.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.abtank.geek.springmvc.model.Box;
+import ru.abtank.geek.springmvc.servises.BoxService;
+
+import java.util.List;
 
 // contextPath  http://localhost:8189/app
 @Controller
 public class HelloController {
+    private BoxService boxService;
+
+    @Autowired
+    public void setBoxService(BoxService boxService) {
+        this.boxService = boxService;
+    }
 
     // http://localhost:8189/app ->/hello
     @RequestMapping(value = "/hello" , method = RequestMethod.GET)
@@ -28,9 +40,11 @@ public class HelloController {
         return "Hello2";
     }
 
-    // http://localhost:8189/app ->/hello_page
-    @GetMapping("/hello_page")
-    public String sayHelloPage(){
+    @GetMapping("/box_page")
+    public String showBoxPage(Model model){
+        List<Box> boxes = boxService.getAllBoxes();
+        model.addAttribute("boxes", boxes);
         return "hello";
     }
+
 }

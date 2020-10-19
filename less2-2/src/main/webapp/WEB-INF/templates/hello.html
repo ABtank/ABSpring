@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -14,20 +15,22 @@
 <body>
 <div>
     <h2>Hello Table</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <td>id</td>
-        <td>name</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>Bob</td>
-    </tr>
-    </tbody>
-</table>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>Цвет</td>
+            <td>Размер</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="box : ${boxes}">
+            <td th:text="${box.id}"></td>
+            <td th:text="${box.color}"></td>
+            <td th:text="${box.size}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <!-- Optional JavaScript -->
