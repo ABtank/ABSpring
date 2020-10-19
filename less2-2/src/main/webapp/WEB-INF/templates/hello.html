@@ -14,13 +14,15 @@
 </head>
 <body>
 <div>
-    <h2>Hello Table</h2>
-    <table class="table">
+    <h2>Box Table</h2>
+    <span th:if="${boxes.isEmpty()}">Коробок нет</span>
+    <table class="table" th:if="${!boxes.isEmpty()}">
         <thead>
         <tr>
             <td>id</td>
             <td>Цвет</td>
             <td>Размер</td>
+            <td>Actions</td>
         </tr>
         </thead>
         <tbody>
@@ -28,9 +30,20 @@
             <td th:text="${box.id}"></td>
             <td th:text="${box.color}"></td>
             <td th:text="${box.size}"></td>
+            <td>
+                <a class="btn btn-danger" th:href="@{'/delete_box/' + ${box.id}}">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
+    <h2>Добавить коробку</h2>
+    <form method="POST" th:action="@{/add_box}">
+        <input type="text" name="color" placeholder="color">
+        <input type="number" name="size" placeholder="size">
+        <button class="btn btn-primary" type="submit">
+            Создать
+        </button>
+    </form>
 </div>
 
 <!-- Optional JavaScript -->

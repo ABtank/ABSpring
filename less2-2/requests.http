@@ -1,0 +1,10 @@
+POST http://localhost:8189/app/show_me_box
+Content-Type: application/json
+
+{
+"id":1,
+"color": "Yellow",
+"size":23
+}
+
+###

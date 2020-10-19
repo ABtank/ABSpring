@@ -33,4 +33,8 @@ public class BoxRepository {
         boxes.add(box);
     }
 
+    public void deleteById(Long id){
+        boxes.removeIf(b -> b.getId().equals(id));
+    }
+
 }

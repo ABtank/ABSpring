@@ -23,4 +23,8 @@ public class BoxService {
     public void save(Box box){
         boxRepository.save(box);
     }
+
+    public void deleteById(Long id){
+        boxRepository.deleteById(id);
+    }
 }
