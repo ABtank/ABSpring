@@ -25,6 +25,7 @@ public class SecurityConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
+                    .antMatcher("/**")
                     .authorizeRequests()
                     .antMatchers("/","/my-login").permitAll()
                     .antMatchers("/user/**", "/product/**").hasAnyRole("ADMIN","USER")
@@ -66,12 +67,13 @@ public class SecurityConfiguration {
     }
 
     //    -----Basic авторизация в REST сервисе-----
-//    @Configuration
-//    @Order(1)
+    @Configuration
+    @Order(1)
     public static class ApiSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
+                    .antMatcher("/api/**")
                     .authorizeRequests()
                     .antMatchers("/api/**").hasRole("ADMIN")
                     .and()
